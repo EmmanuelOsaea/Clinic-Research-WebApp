@@ -101,7 +101,7 @@
                                         <p class="small text-muted mb-1">@offer.Description</p>
                                         <span class="badge bg-warning text-dark mb-2">+ @offer.BonusOffer</span>
                                     </div>
-                                    <form method="post" asp-page-handler="RequestService">
+                                    <form method="post" asp-action="RequestService">
                                         <input type="hidden" name="serviceTitle" value="@offer.Title" />
                                         <button type="submit" class="btn btn-sm btn-success w-100">Request & Auto-Email Offer</button>
                                     </form>

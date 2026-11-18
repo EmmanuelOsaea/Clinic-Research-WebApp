@@ -1,1 +1,1 @@
-This project illustrates the use of C# and .Net to create a clinic research app built with interesting features which can be seen after brainstorming on key features.
+This project illustrates the use of C# and .Net to create a clinic research app built with interesting features which can be seen after brainstorming on key features and then i researched inorder to get the modern code structures.

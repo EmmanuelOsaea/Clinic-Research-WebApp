@@ -1,1 +1,141 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Clinical & Home Health Portal";
+}
 
+<!-- EXTREME TOP CENTER: Seasonal Discount / Trial Grant Popup Modal -->
+<div class="modal fade" id="seasonalPromoModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-primary">
+            <div class="modal-header bg-primary text-gray98">
+                <h5 class="modal-title">Seasonal Health & Research Grant Offer</h5>
+                <button type="button" class="btn-close btn-close-gray98" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center">
+                <h4>50% Seasonal Discount on Home Diagnostic Kits</h4>
+                <p class="text-muted">Enrolled participants and registered users qualify for zero-fee home health monitoring this season.</p>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Claim & Continue</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid mt-3">
+    <!-- TOP ROW -->
+    <div class="row mb-4">
+        <!-- EXTREME TOP LEFT: Security & Activity History -->
+        <div class="col-md-4">
+            <div class="card border-dark h-100 shadow-sm">
+                <div class="card-header bg-dark text-gray98 d-flex justify-content-between">
+                    <span>Security & Audit History</span>
+                    <span class="badge bg-success">@(User.Identity?.IsAuthenticated == true ? "Authenticated" : "Guest Mode")</span>
+                </div>
+                <div class="card-body p-2">
+                    <small class="text-muted d-block mb-2">Immutable Activity Log (21 CFR Part 11 Style):</small>
+                    <ul class="list-group list-group-flush small">
+                        @foreach (var log in Model.RecentLogs)
+                        {
+                            <li class="list-group-item px-1 py-1">
+                                <strong>@log.UserEmail</strong>: @log.Action <br />
+                                <span class="text-muted" style="font-size: 0.75rem;">@log.Timestamp.ToString("HH:mm:ss UTC")</span>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- EXTREME TOP CENTER: Trigger Banner for Seasonal Discount -->
+        <div class="col-md-4 text-center d-flex flex-column justify-content-center">
+            <div class="alert alert-info shadow-sm">
+                <strong>Seasonal Offer Active!</strong><br />
+                <button class="btn btn-sm btn-outline-primary mt-2" data-bs-toggle="modal" data-bs-target="#seasonalPromoModal">
+                    View Seasonal Payment Discount
+                </button>
+            </div>
+        </div>
+
+        <!-- EXTREME TOP RIGHT: Monthly Health Check Auto-Emails -->
+        <div class="col-md-4">
+            <div class="card border-info h-100 shadow-sm">
+                <div class="card-header bg-info text-dark">
+                    <strong>Monthly Health Check Auto-Emails</strong>
+                </div>
+                <div class="card-body p-2">
+                    <small class="text-muted d-block mb-2">Background Worker Dispatch Log:</small>
+                    <ul class="list-group list-group-flush small">
+                        @foreach (var alert in Model.EmailAlerts)
+                        {
+                            <li class="list-group-item px-1 py-1">
+                                <span class="badge bg-primary">Auto</span> @alert.Status <br />
+                                <span class="text-muted" style="font-size: 0.75rem;">To: @alert.Recipient (@alert.SentAt.ToString("HH:mm:ss"))</span>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BOTTOM ROW -->
+    <div class="row">
+        <div class="col-md-3"></div>
+
+        <!-- EXTREME CENTER BELOW: Home Services & Invaluable Offers -->
+        <div class="col-md-6">
+            <div class="card border-primary shadow-sm">
+                <div class="card-header bg-primary text-gray98 text-center">
+                    <strong>Home Health Services & Attached Offers</strong>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        @foreach (var offer in Model.Offers)
+                        {
+                            <div class="col-md-6 mb-2">
+                                <div class="border rounded p-2 h-100 d-flex flex-column justify-content-between">
+                                    <div>
+                                        <h6>@offer.Title</h6>
+                                        <p class="small text-muted mb-1">@offer.Description</p>
+                                        <span class="badge bg-warning text-dark mb-2">+ @offer.BonusOffer</span>
+                                    </div>
+                                    <form method="post" asp-page-handler="RequestService">
+                                        <input type="hidden" name="serviceTitle" value="@offer.Title" />
+                                        <button type="submit" class="btn btn-sm btn-success w-100">Request & Auto-Email Offer</button>
+                                    </form>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- EXTREME RIGHT BELOW: Data Storage Accessibility & Reliability -->
+        <div class="col-md-3">
+            <div class="card border-success h-100 shadow-sm">
+                <div class="card-header bg-success text-gray98">
+                    <strong>Data Storage & Reliability</strong>
+                </div>
+                <div class="card-body small">
+                    <p class="mb-1"><strong>Status:</strong> @(Model.IsDatabaseHealthy ? "ONLINE & ACCESSIBLE" : "OFFLINE")</p>
+                    <p class="mb-1"><strong>Query Latency:</strong> @Model.DbLatencyMs ms</p>
+                    <p class="mb-1"><strong>Integrity Mode:</strong> ACID / EF Core SQLite</p>
+                    <p class="mb-0"><strong>Total Audit Records:</strong> @Model.TotalRecords</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Automatically show the seasonal popup when the page loads
+        window.addEventListener('DOMContentLoaded', () => {
+            var promoModal = new bootstrap.Modal(document.getElementById('seasonalPromoModal'));
+            promoModal.show();
+        });
+    </script>
+}

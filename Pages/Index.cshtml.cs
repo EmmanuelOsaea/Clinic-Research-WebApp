@@ -1,3 +1,7 @@
+@page
+@using ClinicResearchWebApp.Pages
+@model IndexModel
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;

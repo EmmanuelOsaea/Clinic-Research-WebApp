@@ -10,7 +10,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite("Data Source=clinicresearch.db"));
 
 // Configure Strong Authentication (Identity)
-builder.Services.AddDefaultIdentity(options => {
+    builder.Services.AddDefaultIdentity(options => options.SignIn.RequireConfirmedAccount = true) {
+    .AddEntityFrameworkStores<ApplicationDbContext>();                                   
     options.SignIn.RequireConfirmedAccount = false;
     options.Password.RequireDigit = true;
     options.Password.RequiredLength = 8;

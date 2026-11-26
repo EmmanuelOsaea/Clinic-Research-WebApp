@@ -1,7 +1,3 @@
-@page
-@using ClinicResearchWebApp.Pages
-@model IndexModel
-
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -9,15 +5,10 @@ using Microsoft.EntityFrameworkCore;
 using ClinicResearchWebApp.Data;
 using ClinicResearchWebApp.Models;
 
-
 namespace ClinicResearchWebApp.Pages
 {
     public class IndexModel : PageModel
-    {    
-      
-      public void OnGet()
-{
-}
+    {
         private readonly ApplicationDbContext _db;
 
         public IndexModel(ApplicationDbContext db)
@@ -77,4 +68,3 @@ namespace ClinicResearchWebApp.Pages
         }
     }
 }
-

@@ -63,7 +63,7 @@ namespace ClinicResearchWebApp.Pages
                 SentAt = DateTime.UtcNow
             });
 
-            await _db.SaveChangesAsync();
+            await _db.SaveChangesAsync(); 
             return RedirectToPage();
         }
     }
